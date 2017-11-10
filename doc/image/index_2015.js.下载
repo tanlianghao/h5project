@@ -1,0 +1,589 @@
+$('body').ready(function() {
+	$('.sale_ads').lazyload({
+	    effect:'show',
+	    threshold : 10, 
+	    failurelimit : 0, 
+	    event : "scroll",  
+	    container : window
+	  });
+	  $('.sale_slider').lazyload({
+	    effect:'show',
+	    threshold : 10, 
+	    failurelimit : 0, 
+	    event : "scroll",  
+	    container : window
+	  });
+	  $('.in_floor_l ul').lazyload({
+	    effect:'show',
+	    threshold : 10, 
+	    failurelimit : 0, 
+	    event : "scroll",  
+	    container : window
+	  });
+    var a = {
+        tab: function b(e, c, d) {
+            if (e.length > 1) {
+                e.eq(0).addClass("cur").siblings().removeClass("cur");
+                c.hide().eq(0).show();
+                e.hover(function() {
+                    _thisNum = $(this).index();
+                    $(this).addClass("cur").siblings().removeClass("cur");
+                    c.eq(_thisNum).show().siblings(d).hide()
+                })
+            }
+        }
+    };
+	a.tab($(".tabs a"), $(".news_list"), ".news_list");
+	a.tab($(".fri_tit li"), $(".fri_ct"), ".fri_ct");
+	a.tab($(".center_col_title li"), $(".center_col_div"), ".center_col_div");
+    //��ҳ�ֲ�ͼ
+    carrySwitch($("#slideSwitchid"),$("#tsSlideid"));
+    //��ҳ¥�����Ч��
+	if($('.index_floor').length>0){
+		addLoadEvent(scrollFloor);
+		$('.sp_show').each(function() {
+			$(this).find('li').last().addClass('last');
+		});
+	}
+	
+    function switchTab(menu,box){
+        this.menuNav = $(menu);
+        this.boxs = $(box);
+        this.index=0;
+        var that = this;
+        this.menuNav.on('click',function(){
+          that.index = that.menuNav.index($(this));
+          if(!$(this).hasClass('tabMenu_cur')){
+            that.menuNav.removeClass('tabMenu_cur')
+            $(this).addClass('tabMenu_cur');
+            that.boxs.addClass('hide');
+            that.boxs.eq(that.index).removeClass('hide');
+          }
+        });
+    }
+    new switchTab('.consult_tabMenu .consult_tt','.consult_tabBox .consult_text');
+});
+function scrollFloor(){
+	var arr=new Array();
+	var arr1=new Array();
+	var arr2=new Array();
+	var index_floor_num=$(".index_floor").length;
+	var eleva_t=($(window).height()-$("#elevator_n").height())/2;
+	$("#elevator_n").css("top",eleva_t);
+	var eleva_li_h=$("#elevator_n li").height();
+	var show_h=$(".index_floor").first().offset().top-eleva_t;
+	var hide_h=$(".index_floor").last().offset().top+$(".index_floor").last().height();
+	$(".index_floor").each(function(i) {
+		arr[i]=$(this).offset().top - eleva_t - eleva_li_h * (i+1);
+		arr1[i]=$(this).offset().top+$(this).height();
+		arr2[i]=$(this).offset().top;
+	});
+	$(window).bind("scroll",scrollx);
+	$("#elevator_n li").hover(
+		function() {
+			$(this).addClass('hover');
+		},
+		function(){
+			$(this).removeClass('hover');
+		}
+	);
+	$("#elevator_n li").click(function() {
+		var index=$(this).index();
+		$(window).unbind('scroll',scrollx);
+		$(this).addClass('current');
+		$(this).siblings().removeClass('current');
+		$(".index_floor").eq(index).find(".floor_name").addClass('cur');
+		$(".index_floor").eq(index).siblings().find(".floor_name").removeClass('cur');
+		$('body,html').stop(true).animate({scrollTop:arr2[index]},1000,function(){
+			$(window).bind("scroll",scrollx);},false);  
+	});
+	function scrollx(){
+		var a=$(document).scrollTop();
+		if(a>=show_h && a<hide_h){
+			$("#elevator_n").show();
+			for(var i=0;i<index_floor_num;i++){
+				if(a>arr[i] && a<arr1[i]){
+					$("#elevator_n").find('li').eq(i).addClass('current');
+					$("#elevator_n").find('li').eq(i).siblings().removeClass('current');
+					$(".index_floor").eq(i).find(".floor_name").addClass('cur');
+					$(".index_floor").eq(i).siblings().find(".floor_name").removeClass('cur');
+				}
+			}
+		}else{
+			$("#elevator_n").hide();
+		} 
+	}
+}
+function indexFloorAds(_link,id){
+    var _html = '';
+    if(_link.adList.length > 0){
+        for(var i=0;i<(_link.adList.length > 2 ? 2 : _link.adList.length);i++){
+           if(1 == i){
+               _html += '<a href="'+_link.adList[i].picturelink+'"><img  class="last" src="'+ _link.adList[i].pictureurl+'" alt="'+_link.adList[i].tishi+'" width="'+ _link.width+'"  height="'+ _link.height+'"/></a>';
+            }else{
+               _html += '<a href="'+_link.adList[i].picturelink+'"><img src="'+ _link.adList[i].pictureurl+'" alt="'+_link.adList[i].tishi+'" width="'+ _link.width+'"  height="'+ _link.height+'"/></a>';
+            }
+        }
+        $('#'+id).html(_html);
+    }
+}
+function indexFloorLogo(_link,id){
+    var _html = '';
+    if(_link.adList.length > 0){
+        for(var i=0;i<(_link.adList.length > 8 ? 8 : _link.adList.length);i++){
+            _html += '<li><a href="'+_link.adList[i].picturelink+'"><img src="'+ _link.adList[i].pictureurl+'" alt="'+_link.adList[i].tishi+'" width="'+ _link.width+'"  height="'+ _link.height+'"/></a></li>';
+        }
+        $('#'+id).html(_html);
+    }
+}
+function carrySwitch(switchId,id){
+	switchId.children("a").powerSwitch({
+	    autoTime: 4000,
+		eventType: "hover",
+	    animation: "translate",
+	    classAdd: "y_slide_on",
+	    classRemove: "y_slide_a",
+	    classPrefix: "y_slide",
+	    container: id,
+			onSwitch: function(target) {
+				var osrc = $(target[0]).attr('osrc');
+				if(osrc){
+					$(target[0]).attr('src', osrc);
+					$(target[0]).removeAttr("osrc");
+				}
+			}
+	});
+}
+function addSlide(img_data,id,switchId,slideImg){
+	var slide = {};
+	slide.htmlContent = '';
+	slide.navHtmlContent = '';
+	slide.count = 0;
+	slide.data = img_data;
+	var adlist = slide.data[0].adList;
+	var index = 0,
+		htmlContent = '', 
+		style,
+		generate = function(data, index) {
+		    var ad = {}, _src = "", r = '';numDiv = '<div id="'+switchId+'" class="tsSlideSwitch">';
+		    for (var i = 0; i < data.length; i++) {
+		        ad = data[i];
+		        if (index == 1) {
+		            if(i==0){
+		                _src =  'src="' + (isWidescreen?ad.pictureurlbig:ad.pictureurl) + '" ';
+		            }else{_src = ' src="' + (isWidescreen?ad.pictureurlbig:ad.pictureurl) + '" ';}
+		        } else {
+		            _src = ' src="' + (isWidescreen?ad.pictureurlbig:ad.pictureurl) + '" ';
+		        }
+		        
+		        divClass = 'y_slide_a';
+		        style = 'left:0;z-index:'+(9-i);
+		        if(i == 0){
+		            divClass = 'y_slide_on';
+		        }
+		        r += '<a  href="' + ad.picturelink 
+            + '" id="tsSlideLi_' + (i+1) + '"><img width="'+(isWidescreen ? slide.data[0].widthbig: slide.data[0].width)+'" height="'+(isWidescreen ? slide.data[0].heightbig: slide.data[0].height)+'" alt="' + ad.tishi + '" title="' + ad.tishi + '"'
+            + 'class="y_slide_img" style="' + style + '"'
+            + 'id="'+slideImg + i + '"' + _src + '/></a>';
+		        
+		        numDiv += '<a href="javascript:" target="_self" class="' + divClass + '" data-rel="'+slideImg + i + '"></a>';
+		    }
+		    numDiv += '</div>';
+		    return r + numDiv;
+		};
+
+	for (; index < slide.data.length; index++) {
+	    if (slide.data[index].adList.length >= 1) {
+	        slide.count = 1;
+	        htmlContent += generate(slide.data[index].adList, 1)
+	    } else {
+	        htmlContent += generate(slide.data[index].adList, 0)
+	    }
+	}
+	id.html(htmlContent);
+}
+function addSlide_floor(img_data,id,switchId,slideImg){
+	var slide = {};
+	slide.htmlContent = '';
+	slide.navHtmlContent = '';
+	slide.count = 0;
+	slide.data = img_data;
+	var adlist = slide.data[0].adList;
+	var index = 0,
+		htmlContent = '', 
+		style,
+		generate = function(data, index) {
+		    var ad = {}, _src = "", r = '';numDiv = '<div id="'+switchId+'" class="tsSlideSwitch">';
+		    for (var i = 0; i < data.length; i++) {
+		        ad = data[i];
+		        if (index == 1) {
+		            if(i==0){
+		                _src =  'src="' + ad.pictureurl + '" ';
+		            }else{_src = ' src="' + ad.pictureurl + '" ';}
+		        } else {
+		            _src = ' src="' + ad.pictureurl + '" ';
+		        }
+		        
+		        divClass = 'y_slide_a';
+		        //style = '-webkit-transition: -webkit-transform 250ms linear;-moz-transition: -moz-transform 250ms linear; -ms-transition: -webkit-transform 250ms linear;-o-transition: -webkit-transform 250ms linear;transition: -webkit-transform 250ms linear;-moz-transform 250ms linear;-ms-transform 250ms linear;-o-transform 250ms linear; -webkit-transform: translateX(-100%); -webkit-backface-visibility: hidden;-moz-transform: translateX(-100%); -moz-backface-visibility: hidden;-ms-transform: translateX(-100%); -ms-backface-visibility: hidden;-o-transform: translateX(-100%); -o-backface-visibility: hidden;';
+		        style = 'left:0;z-index:'+(9-i);
+		        if(i == 0){
+		            divClass = 'y_slide_on';
+		        }
+		        r += '<a  href="' + ad.picturelink 
+            + '" id="tsSlideLi_' + (i+1) + '"><img width="'+slide.data[0].width+'" height="'+slide.data[0].height+'" alt="' + ad.tishi + '" title="' + ad.tishi + '"'
+            + 'class="y_slide_img" style="' + style + '"'
+            + 'id="'+slideImg + i + '"' + _src + '/></a>';
+		        
+		        numDiv += '<a href="javascript:" target="_self" class="' + divClass + '" data-rel="'+slideImg + i + '"></a>';
+		    }
+		    numDiv += '</div>';
+		    return r + numDiv;
+		};
+
+	for (; index < slide.data.length; index++) {
+	    if (slide.data[index].adList.length >= 1) {
+	        slide.count = 1;
+	        htmlContent += generate(slide.data[index].adList, 1)
+	    } else {
+	        htmlContent += generate(slide.data[index].adList, 0)
+	    }
+	}
+	id.html(htmlContent);
+}
+function addFn(id){
+	// ��ʼ����ǩ
+	var tag = $("#" + id);
+  tag.switchTab({
+      titCell: ".con_title a",
+      mainCell: ".product_list",
+      trigger: "mouseover",
+      delayTime: 200,
+      omitLinks: false
+  });
+  // TOP5
+  tag.parent().next().find('div > ul[class*="top5box"] > li').mouseover(function () {
+		$(this).addClass('hover').siblings().removeClass('hover');
+		$.exeScroll();
+	});
+  // ��ʱ����ͼƬ���л�ѡ�ʱ���أ�
+	$('#' + id + '> ul[class="con_title"] > li').bind('mouseover', function(){
+		setTimeout('$.exeScroll()', 250);
+	});
+}
+
+var longGG_index = 1;
+function loadIndexLongGG(id, gg_name){
+	var t = $('#' + id);
+	var g;
+	for(var i in index_long_gg.adList){
+		g = index_long_gg.adList[i];
+		if(gg_name == g.adname){
+			//var isand = g.picturelink.match(/.*(\?.*?=).*/);
+			$('<div class="wrap tonglan mt10"><a href="' + g.picturelink + '"><img onerror="$(this).hide()" src="' + (isWidescreen?g.pictureurlbig:g.pictureurl)
+				+ '" title="' + g.tishi + '"width="'+ (isWidescreen?1190:990) + '\" height=\"90\"' + '/></a></div>').insertAfter(t);
+			break;
+		}
+	}
+}
+
+
+function drawBottomCart(show){
+	if(!show){
+		if($('#bottom_minicart_list').css('display')=='block'){
+			return;
+		}
+	}
+	$.ajax({
+		url : "http://buy.111.com.cn/cart/shoppingcart/queryCartItem.action",
+		type : "GET",
+		dataType: "jsonp",
+		success : function(data) {
+			var cart = data;
+			if(!cart||cart.length==0){
+				cleanBottomCart();
+				return;
+			}else{
+				$('.float_box .none_tips').hide();
+				$('.float_box .list_detail > ul').show();
+				$('.float_box .checkout_box').show();
+				$('#bottom_minicart_list').css("display","block");
+				$('#bottom_minicart_list').show();
+			}
+			$.ajaxSetup({cache: true});
+			// show
+			var ul = $('#bottom_minicart_list > div > ul')[0];
+			var count = 0;
+			var price = 0;
+			$(ul).html('');
+			try{
+				for(var i = cart.length-1; i >= 0; i--){
+					var c = cart[i];
+					var url = 'http://www.111.com.cn/product/' + c.refmainitemid + '.html';
+
+					if(c.itemtype==3){
+						url += '#'+c.itemId+'" onclick="$(\'#' + c.itemId + '\').click();';
+					}
+
+					var pic = c.itemImage || (c.items[0] && c.items[0].itemImage);
+					var name = c.itemname;
+					var showName = "";
+					try{
+						showName = cartItemTypes[c.itemtype].showName;
+					}catch(e){showName=""}
+
+					var subClass="minus";
+					if(c.itemcount <= 1){
+						subClass="minusDisable";
+					}
+					$(ul).append('<li><a traget="_blank" class="pro_img" href="' + url
+						+ '"><img heigth="40" width="40" alt="' + name + '" src="' + pic + '" onerror="imgERROR(this,\'no_pic_50_50.jpg\');"/></a>'
+						+ '<a traget="_blank" class="pro_name" href="' + url + '">' + showName + name + '</a>'
+						+ '<span class="pro_price">&yen;' + parseFloat(c.itemoriginalprice) + '</span>'
+						+ '<div class="num_box"><b name="editName_' + c.itemId + '" class="'+subClass+'" onclick="updateBottomCart(-1,' + c.itemId + ',' + c.itemtype + ')"></b><input type="text" class="minicart_num" value="'
+						+ c.itemcount + '"><b name="editName_' + c.itemId + '" class="plus" onclick="updateBottomCart(1,' + c.itemId + ',' + c.itemtype + ')"></b><a target="_self" style="display:none;" href="javascript:removeCart(' + c.itemId + ',' + c.itemtype + ')">ɾ��</a></div></li>'
+					);
+					count += parseInt(c.itemcount);
+					price = accAdd(price, accMul(c.itemoriginalprice, c.itemcount));
+				}
+				//showSub
+				$('#bottom_minicart_list > div > div > p > em').html('&yen;' + parseInt(price*100)/100);
+				$('.float_box .f_wei').html('<i>'+count+'</i>');
+				$('#bottom_minicart_list > div > div > p > span > em').html(count);
+				$('#bottom_minicart_list').css("display","block");
+				$('#bottom_minicart_list').show();
+				updateMiniCartCount(count);
+			}catch(e){drawBottomCart()}
+			$.ajaxSetup({cache: false});
+		},
+		error: function(e) {
+			cleanBottomCart();
+			return;
+		}
+	});
+
+}
+
+function loadBottomItemData_(cart, itemprice, ids1, ids2){
+	$.ajax({
+	   type: "GET",
+	   dataType:'jsonp',
+		 jsonp:'jsoncallback',
+		 jsonpCallback:'cbprice',
+	   url: 'http://www.111.com.cn/front/promotion/product/redePrice.action?itemId='+ids2,
+	   async: false,
+	   success: function(msg){
+		   doBottomItemData_(cart, itemprice, ids1, msg);
+	   }
+	});
+}
+
+function doBottomItemData_(cart, itemprice, ids, itemPrice2){
+	var date = new Date().format("yyMMddhhmm");
+	var price = 0;
+	$.ajax({
+		type: "GET",
+		url: "http://www.111.com.cn/interfaces/item/itemPrice.action?itemids=" + ids+ "&_=" + date.substring(0,date.length - 1),
+		dataType:'jsonp',
+		jsonp:'jsoncallback',
+		jsonpCallback:'cbprice',
+		success: function(data){
+			for(var ci = 0; ci < cart.length; ci++){
+				var c = cart[ci];
+				$.each(data, function(i,item){
+					if(c.ii == item.id){
+						cart[ci].pic = item.img5;
+						itemprice[c.ii+"_"+c.iy] = {};
+						if(c.iy == 7){
+							var p_ = 0;
+							
+							if(itemPrice2 != "" && itemPrice2[c.ii] != -1)
+								p_ = itemPrice2[c.ii];
+							else
+								p_ = item.price;
+								
+							itemprice[c.ii + "_7"]['price'] = p_;
+							price = accAdd(price, accMul(p_, c.ic));
+						}else if(c.iy == 6){ // ��Ʒ
+							itemprice[c.ii+"_"+c.iy]['price'] = 0;
+						}else{
+							price = accAdd(price, accMul(item.price, c.ic));
+							itemprice[c.ii+"_"+c.iy]['price'] = item.price;
+						}
+	
+						itemprice[c.ii+"_"+c.iy]['name'] = item.name;
+						itemprice[c.ii+"_"+c.iy]['saletype'] = item.saletype;
+					}
+				});
+			}
+			
+			$('#bottom_minicart_list > div > div > p > em').html('&yen;' + parseInt(price*100)/100);
+			
+			// show
+			var ul = $('#bottom_minicart_list > div > ul')[0];
+			var count = 0;
+			$(ul).html('');
+		
+			try{
+				for(var i = cart.length-1; i >= 0; i--){
+					var c = cart[i];
+					var url = 'http://www.111.com.cn/product/' + c.ri + '.html';
+					
+					if(c.iy==3){
+						url += '#'+c.ii+'" onclick="$(\'#' + c.ii + '\').click();';
+					}
+					
+					var pic = c.pic;
+					var name = itemprice[c.ii+"_"+c.iy]['name'];
+				
+					
+					var subClass="minus"; 
+					if(c.ic <= 1){
+						subClass="minusDisable";
+					}
+					$(ul).append('<li><a traget="_blank" class="pro_img" href="' + url
+							+ '"><img heigth="40" width="40" alt="' + name + '" src="' + pic + '" onerror="imgERROR(this,\'no_pic_50_50.jpg\');"/></a>'
+							+ '<a traget="_blank" class="pro_name" href="' + url + '">' + cartItemTypes[c.iy].showName + name + '</a>'
+							+ '<span class="pro_price">&yen;' + parseFloat(itemprice[c.ii+"_"+c.iy]['price']) + '</span>'
+							+ '<div class="num_box"><b name="editName_' + c.ii + '" class="'+subClass+'" onclick="updateBottomCart(-1,' + c.ii + ',' + c.iy + ')"></b><input type="text" class="minicart_num" value="'
+							+ c.ic + '"><b name="editName_' + c.ii + '" class="plus" onclick="updateBottomCart(1,' + c.ii + ',' + c.iy + ')"></b><a target="_self" style="display:none;" href="javascript:removeCart(' + c.ii + ',' + c.iy + ')">ɾ��</a></div></li>'
+					);
+					count += parseInt(c.ic);
+				}
+				//showSub
+
+				$('.float_box .f_wei').html('<i>'+count+'</i>');
+				$('#bottom_minicart_list > div > div > p > span > em').html(count);
+				$('#bottom_minicart_list').css("display","block");
+				$('#bottom_minicart_list').show();
+			}catch(e){drawBottomCart()}
+			$.ajaxSetup({cache: false});
+		}
+	});
+}
+
+function cleanBottomCart(){
+	$('#bottom_minicart_list').hide();
+	$('.float_box .list_detail > ul').hide();
+	$('.float_box .none_tips').show();
+	$('#bottom_minicart_list > div > ul').html('');
+	$('.float_box .f_wei').html('<i>'+0+'</i>');
+	$('#bottom_minicart_list > div > div > p > span > em').html(0);
+	$('#bottom_minicart_list > div > div > p > em').html('&yen;0.00');
+	$.cookie('cartItem', null, {path:'/', domain: '.111.com.cn'});
+	$('#bottom_minicart_list').hide();
+	$('.float_box .list_detail > ul').hide();
+	$('.float_box .checkout_box').hide();
+	$('.float_box .none_tips').show();
+}
+
+function updateBottomCart(num,ii,iy){
+	if(iy == 6 || iy == 7)return;
+	var item = {'itype':parseInt(iy),'itemnum':parseInt(num),'itemid':parseInt(ii)};
+	$.ajax({
+		url : "http://buy.111.com.cn/cart/shoppingcart/addCartItem.action",
+		type : "GET",
+		data : item,
+		dataType: "jsonp",
+		success : function(data) {
+			if(data!=null&&data.result=='success') {
+				drawBottomCart(1);
+			}else{
+				alert(data.result);
+			}
+		},
+		error: function(e) {
+			alert("ϵͳ��æ�����Ժ����ԣ�");
+		}
+	});
+}
+
+function loadMyPrivateCustom(){
+	$('body').append("<div id='loadMyTagsDiv'></div>");
+	$("#loadMyTagsDiv").load("http://www.111.com.cn/mblock/24/b_1_private_custom_my_tags.html");
+}
+
+function startPrivateCustom(){
+	window.scroll(0,0);
+	$('body').append("<div id='beginCustomDiv'></div>");
+	$("#beginCustomDiv").load("http://www.111.com.cn/mblock/26/b_1_private_custom_determine.html");
+}
+
+function privateCustomLogin(){
+	$('body').append("<div id='customLoginDiv'></div>");
+	$("#customLoginDiv").load(
+		"http://www.111.com.cn/mblock/20/b_private_custom_login.html"
+		, function(){
+				popLogin();
+			}
+	 );
+}
+
+function showPrivateCustom(){
+  /**
+   * �û����Ƶı�ǩ
+   * �����±�ǩʱ����JS�ж��Ƿ��¼
+   *      δ��¼����·�Ľӿڵ�¼
+   *      �����¼���� --> loadMyPrivateCustom��
+   *          1���ж��Ƿ��¼
+   *          2���ж��Ƿ���������
+   *          3����ѯ�û����Ƶı�ǩ-��Ʒ
+   * ����Ѿ���ʾ�˶�����ֱ����ʾ����
+   */
+	var isLogin = createUser();
+	if(isLogin){
+		loadMyPrivateCustom();
+	} else {
+		privateCustomLogin();
+	}
+}
+
+/**lcl新手礼弹窗js*/
+addLoadEvent(guideIndex);
+function guideIndex(){
+	var url="'http://my.111.com.cn/ucenter/queryCoupon.action'";
+	var str='<div id="packageCon"><div class="newuser_box">'
+			+'<img src="http://s.maiyaole.com/images/201306/images/user/newuser.png" alt="新手礼" width="514" height="486"/></a>'
+			+'<span class="close_s"  onclick="close_newPackage();"></span>'
+			+'<span class="nowSee"  onclick="close_newPackage('+url+');"></span>'
+			+'</div>'
+		+'<div id="guide-mask">&nbsp;</div></div>';
+		if(!$.cookie("tan_status") || $.cookie("tan_status")!=1){
+			return false;
+		}
+		if($("body").find($("#packageCon")).length==0){
+			$('body').append(str);
+		}
+}
+function close_newPackage(src){
+	var url="//gateway.fangkuaiyi.com/xpassport/updateUserSet";
+	var gltoken=$.cookie("gltoken");
+	var params={
+		tradername: 'yw_app',
+		trader: "pc",
+		closesignature: "yes",
+		signature_method: "md5",
+		timestamp:new Date().getTime(), //new Date().getTime()
+		signature: "****",
+		token:gltoken,
+		on:1,
+		set_type:1
+	}
+	$.ajax({
+		type:"post",
+		url:url,
+		data:params,
+		async:true,
+		success:function(data){
+			if(data.rtn_code==0){
+				$('#packageCon').hide();
+				$.cookie("tan_status",0,{path:'/', domain: '.111.com.cn'});
+				if(src){
+					window.location.href=src;
+				}
+			}else{
+				alert(data.rtn_tip);
+			}
+		}
+	});
+}

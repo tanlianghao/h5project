@@ -1,0 +1,123 @@
+$(document).ready(function() {
+	$('.menu').mousemove(function() {
+		$(this).find('.menu_bd_panel').show();
+	});
+	$('.menu').mouseleave(function() {
+		$(this).find('.menu_bd_panel').hide();
+	});
+	$(".open_ag").click(function() {
+		$(".ag_ul").removeClass("fix_ag");
+		$(".open_ag").hide();
+	});
+});
+
+function isRetina() {
+	var mediaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
+                      (min--moz-device-pixel-ratio: 1.5),\
+                      (-o-min-device-pixel-ratio: 3/2),\
+                      (min-resolution: 1.5dppx)";
+
+	if (window.devicePixelRatio > 1) return true;
+
+	if (window.matchMedia && window.matchMedia(mediaQuery).matches) return true;
+
+	return false;
+};
+if (isRetina()) {
+	$('#yao_logo').attr('src', 'http://p1.maiyaole.com/images/201306/images/logo_new_2.gif');
+} else {
+	$('#yao_logo').attr('src', 'http://p1.maiyaole.com/images/201306/images/logo_new.gif');
+}
+var ref = '';
+if (document.referrer.length > 0) {
+	ref = document.referrer;
+}
+try {
+	if (ref.length == 0 && opener.location.href.length > 0) {
+		ref = opener.location.href;
+	}
+} catch(e) {}
+
+function loadHotKeys(id, type) {
+	var url = "http://www.111.com.cn/";
+	var myCid = $('head > [name=catalog]').attr('cataid');
+	var myType = $('head > [name=catalog]').attr('type');
+	if (myType) type = myType;
+	if (myCid) id = myCid;
+
+	if (myCid || id) {
+		url += type ? 'sblock/': 'cblock/';
+		url += parseInt(id / 1000) + "/" + id;
+		url += "/b_hot_search.html";
+	} else {
+		url = url + "sblock/0/1/b_hot_search.html";
+	}
+	var sframe = $('<iframe src="' + url + '" id="iframe" style="display:none;"></iframe>');
+	$('body').append(sframe);
+	sframe.ready(function() {
+		try {
+			$('body').append($(document.getElementById('iframe').contentWindow.document.body).html());
+		} catch(err) {};
+	});
+	
+};
+function addLoadEvent(func){
+    var oldonload=window.onload;
+    if(typeof window.onload!='function'){
+        window.onload=func;
+    }else{
+        window.onload=function(){
+            oldonload();
+            func();
+        }
+    }
+}
+addLoadEvent(function() {
+	$('#hotkeys > a').attr("target", "_blank");
+	$('#hotkeys > a[href*="javascript"]').click(function() {
+		hotKeySearch($(this).text());
+		return false;
+	});
+});
+
+var tracker = document.location.href.match(/.*?tracker_u=(\d+)&*/);
+
+if (tracker) {
+	$.cookie('YAOCPS_GUID', "1", {
+		path: '/',
+		domain: '.111.com.cn',
+		expires: -1
+	});
+	$.cookie('YAO_CPS_KEY', "1", {
+		path: '/',
+		domain: '.111.com.cn',
+		expires: -1
+	});
+	$.cookie('tracker_u', tracker[1], {
+		path: '/',
+		domain: '.111.com.cn',
+		expires: 1
+	});
+	$(document).ready(function() {
+		$('a[href*="111.com.cn"]').not('a[href*="tracker_u"]').each(function() {
+			var $t = $(this);
+			if (/.*\?.+?=.+$/.test($t.attr('href'))) {
+				$t.attr('href', $t.attr('href') + "&tracker_u=" + tracker[1])
+			} else {
+				$t.attr('href', $t.attr('href') + "?tracker_u=" + tracker[1])
+			}
+		})
+	})
+}
+
+(function() {
+	var cat_tab = $('.headerNavWrap > li');
+	for (var i = 0; i < cat_tab.length; i++) {
+		var href = $(cat_tab[i]).find('a').attr('href');
+		if (href == window.location.href) {
+			$(cat_tab[i]).attr('class', 'cur');
+			return;
+		}
+	}
+	$('#nav_home').attr('class', 'cur');
+})();
