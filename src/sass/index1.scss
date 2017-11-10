@@ -1,0 +1,61 @@
+#loginBar{
+    background: #F1F1F1;
+    ul{
+        li{
+            float: left;
+            a{display:inline-block;height:30px;line-height: 30px;
+            span{padding:0 11px;border-right:1px solid #58bc58;}
+            }
+        }
+    }
+}
+#nav{
+    height:177px;
+    .nav_t{
+        height:130px;position: relative;
+            i{
+                &:first-child{float: left;height:61px;width:115px;background:url('../img/sprit.fw.png') no-repeat;;margin-top:30px;}
+                &:nth-of-type(2){
+                    display:inline-block;height:115px;width:123px;background:url('../img/sprit.fw.png') -240px 0;margin-right:165px;float: right;margin-top:15px;
+                }
+            }
+            .seek{
+                float: left;width:450px;display:inline-block;margin-left:200px;margin-top:34px;position: relative;
+                input{
+                    border:1px solid #B5AA96;width:450px;height:46px;display:inline-block;font-size:20px;padding-left:10px;box-sizing:border-box;
+                }
+                >span{
+                    float: right;width:83px;border:1px solid #B5AA96;height:44px;position: absolute;right:-83px;
+                }
+                ul{
+                    li{
+                       float: left;padding-left:10px;margin-top:10px; 
+                    }
+                }
+            }
+            >span{
+                display:inline-block;width:140px;height:40px;border:1px solid #B5AA96;position: absolute;right:0px;top:43px;text-align:center;line-height: 40px;
+            }
+    }
+    .nav_b{
+        height:48px;line-height: 48px;font-size:16px;
+        h4{
+           display:inline-block;width:178px;background: #193239;color:#fff;padding-left:10px;box-sizing:border-box; 
+        }
+        ul{
+            margin-right:70px;
+            li{
+               float: left; 
+               a{
+                padding:0 15px;
+               }
+            }
+        }
+    }
+}
+
+
+           
+
+
+
