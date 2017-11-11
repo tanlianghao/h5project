@@ -1,5 +1,5 @@
 #loginBar{
-    background: #F1F1F1;
+    background: #efefef;
     ul{
         li{
             float: left;
@@ -10,7 +10,7 @@
     }
 }
 #nav{
-    height:177px;
+    height:177px;border-bottom:2px solid #D2B994;
     .nav_t{
         height:130px;position: relative;
             i{
@@ -53,7 +53,67 @@
         }
     }
 }
+#main{
+    .carousel_l{
+        width:180px;float: left;height:400px;
+        >ul{position: relative;
+            >li{background: #314349;
+                >h4{color:#fff;font-size:16px;height:40px;line-height: 40px;padding-left:10px;}
+                >div{
+                    position: absolute;width:750px;left:180px;top:0;display:none;background: #fff;height:400px;padding-top:10px;padding-left:10px;
+                    >div{
+                        float: left;height:180px;margin-left:10px;
+                        >ul{width:100px;float: left;
+                            >li{float:left;}
+                        }
+                    }
+                }
 
+            }
+            .l_active{background: red;}
+
+        }
+    }
+    .carousel_c{
+        width:750px;float: left;height:400px;overflow:hidden;position: relative;
+        .caru{position: absolute;}
+        .dot{
+            position: absolute;z-index:1;
+            li{width:15px;height:15px;border:1px solid #ccc;border-radius:50%;float:left;margin-left:20px;}
+            .active{background: #000;}
+        }
+    }
+    .carousel_r{
+        width:259px;float: right;height:400px;padding-left:22px;box-sizing:border-box;position: relative;
+        span{display:inline-block;height:30px;line-height: 30px;font-size:16px;padding-left:30px;margin-bottom:20px;
+            
+        }
+        .office{
+            ul{
+                li{
+                    float: left;width:64px;height:25px;font-size:14px;line-height: 25px;margin-left:10px;
+                }
+            }
+        }
+        i{width:237px;height:80px;position: absolute;right:-5px;bottom:135px;background:url('../img/sprit.fw.png') 0 -80px;}
+        .fuwu{
+            margin-top:100px;
+            ul{
+                li{float: left;margin-left:10px;height:60px;padding-top:40px;box-sizing:border-box;position: relative;
+                    img{
+                        position: absolute;left:5px;top:0px;
+                    }
+                }
+            }   
+        }
+    }
+    .imgGoods{
+        margin:10px 0;
+        ul{
+            li{float: left;}
+        }
+    }
+}
 
            
 

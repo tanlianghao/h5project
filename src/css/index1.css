@@ -1,5 +1,5 @@
 #loginBar {
-  background: #F1F1F1;
+  background: #efefef;
 }
 
 #loginBar ul li {
@@ -19,6 +19,7 @@
 
 #nav {
   height: 177px;
+  border-bottom: 2px solid #D2B994;
 }
 
 #nav .nav_t {
@@ -115,4 +116,150 @@
 
 #nav .nav_b ul li a {
   padding: 0 15px;
+}
+
+#main .carousel_l {
+  width: 180px;
+  float: left;
+  height: 400px;
+}
+
+#main .carousel_l > ul {
+  position: relative;
+}
+
+#main .carousel_l > ul > li {
+  background: #314349;
+}
+
+#main .carousel_l > ul > li > h4 {
+  color: #fff;
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 10px;
+}
+
+#main .carousel_l > ul > li > div {
+  position: absolute;
+  width: 750px;
+  left: 180px;
+  top: 0;
+  display: none;
+  background: #fff;
+  height: 400px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+#main .carousel_l > ul > li > div > div {
+  float: left;
+  height: 180px;
+  margin-left: 10px;
+}
+
+#main .carousel_l > ul > li > div > div > ul {
+  width: 100px;
+  float: left;
+}
+
+#main .carousel_l > ul > li > div > div > ul > li {
+  float: left;
+}
+
+#main .carousel_l > ul .l_active {
+  background: red;
+}
+
+#main .carousel_c {
+  width: 750px;
+  float: left;
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+
+#main .carousel_c .caru {
+  position: absolute;
+}
+
+#main .carousel_c .dot {
+  position: absolute;
+  z-index: 1;
+}
+
+#main .carousel_c .dot li {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  float: left;
+  margin-left: 20px;
+}
+
+#main .carousel_c .dot .active {
+  background: #000;
+}
+
+#main .carousel_r {
+  width: 259px;
+  float: right;
+  height: 400px;
+  padding-left: 22px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#main .carousel_r span {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  padding-left: 30px;
+  margin-bottom: 20px;
+}
+
+#main .carousel_r .office ul li {
+  float: left;
+  width: 64px;
+  height: 25px;
+  font-size: 14px;
+  line-height: 25px;
+  margin-left: 10px;
+}
+
+#main .carousel_r i {
+  width: 237px;
+  height: 80px;
+  position: absolute;
+  right: -5px;
+  bottom: 135px;
+  background: url("../img/sprit.fw.png") 0 -80px;
+}
+
+#main .carousel_r .fuwu {
+  margin-top: 100px;
+}
+
+#main .carousel_r .fuwu ul li {
+  float: left;
+  margin-left: 10px;
+  height: 60px;
+  padding-top: 40px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#main .carousel_r .fuwu ul li img {
+  position: absolute;
+  left: 5px;
+  top: 0px;
+}
+
+#main .imgGoods {
+  margin: 10px 0;
+}
+
+#main .imgGoods ul li {
+  float: left;
 }
