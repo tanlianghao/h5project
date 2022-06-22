@@ -11,10 +11,12 @@
     <div>
         <p  id="mybuttom">跳转到骁龙详情页</p>
         <p  id="mybuttom1">跳转到骁龙新建客户页面</p>
+        <p  id="mybuttom2">跳转到微信</p>
     </div>
     <script type="text/javascript">
         var btn = document.getElementById("mybuttom");
         var btn2 = document.getElementById("mybuttom1");
+        var btn3 = document.getElementById("mybuttom2");
 
         console.log(btn);
         btn.onclick = function() {
@@ -23,6 +25,10 @@
 
         btn2.onclick = function() {
             window.location.href = "https://xdragon.xiaopeng.com/app?xiaolong://clue/checkDouble?mobile=18565340204&agentUserId=wmLbtMCwAAEgAoppso1iOWQIPZkTmTrA"
+        }
+        
+        btn3.onclick = function() {
+            window.location.href = "weixin://"
         }
     </script>
 </html>
