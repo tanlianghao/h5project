@@ -1,0 +1,15 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+           {
+                "appID": "WF4V2K82VY.com.xiaopeng.xdragon.dev",
+                "paths": [ "/app/*" ]
+            },
+            {
+                "appID": "WF4V2K82VY.com.xiaopeng.xdragon.staging",
+                "paths": [ "/app/*" ]
+            }
+        ]
+    }
+}
